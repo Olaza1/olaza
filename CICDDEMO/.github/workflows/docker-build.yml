@@ -18,10 +18,10 @@ jobs:
      steps:
         # Step to checkout the repository code
         - name: Checkout code 
-          uses: docker/login-action@v2
+          uses: actions/checkout@v2
         
         # Step to login to Docker Hub using Docker Hub credentials
-        - name: Build Docker image
+        - name: Login to Docker hub
           uses: docker/login-action@v2
           with:
             username: ${{ secrets.DOCKER_USERNAME }} #Docker hub username stored as secrret
