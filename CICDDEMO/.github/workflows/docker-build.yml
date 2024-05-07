@@ -1,0 +1,41 @@
+# Name of the Github Action workflow
+name: Build and Deploy Docker Image
+
+# Define when the workflow should be triggered
+on:
+  push:
+     branches:
+       - main # Trigger the workflow on push events to the "main" branch
+
+#Define jobs to be executed
+jobs:
+  # Job for building and deploying the docker image 
+  build-and-deploy:
+     # Define the jobs to be executed
+     runs-on: ubuntu-latest
+
+     # Define the steps to be executed for this job
+     steps:
+        # Step to checkout the repository code
+        - name: Checkout code 
+          uses: docker/login-action@v2
+        
+        # Step to login to Docker Hub using Docker Hub credentials
+        - name: Build Docker image
+          uses: docker/login-action@v2
+          with:
+            username: ${{ secrets.DOCKER_USERNAME }} #Docker hub username stored as secrret
+            password: ${{ secrets.DOCKER_PASSWORD }} #Docker hub password stored as secret
+
+     # Step to build the Docker image
+     - name: Build Docker image
+       run: docker build -t my-site . # Build the docker image from the current directory
+
+     # Step to tag the docker image and push it to docker Hub
+     - name: push Docker image
+       run: |
+         docker tag my-site:latest olaza1/my-site:latest
+         docker push olaza1/my-site:latest
+         
+
+       
